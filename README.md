@@ -1,7 +1,23 @@
 # local-connectivity-structure
 Tutorial and demonstration using spectral bipartivity to identify the local connectivity structure of a simple network. Methodological repository accompanying:
 
-## Local connectivity typology
+## Identifying local connectivity structure
+
+Here we propose that spectral bipartivity can be re-purposed to identify local connectivity structure in networks using a comparison to random expectation. Specifically, we use this measure to quantify the relative over-representation of squares vs. triangles in the local connectivity structure of a network. Random networks give us the baseline for values of spectral bipartivity. Social networks have lots of triangles and so are _less_ bipartite than random expectation. Functional networks have lots of squares and so are _more_ bipartite than random expectation. Two-mode networks are bipartite and would have a value of 1. Below is a toy example of how social, random, functional, and two-mode networks with the same number of nodes and edges are arranged according to their value of spectral bipartivity. More detail on local connectivity types and spectral bipartivity below, and in the paper. 
+
+![A toy example of how social, random, functional, and two-mode networks with seven nodes and eleven edges show increasing spectral bipartivity.](scale.jpg?raw=true)
+
+In less contrived scenarios, the comparison to random expectation is key to identifying local connectivity structure because spectral bipartivity is defined as a ratio and the denominator of this ratio is strongly affected by the number of edges in the network. Randomization preserves the number of edges (and the degree sequence) so it serves as a way to “center” the scale such that remaining differences reflect local connectivity structure. Developing new measures that would allow for comparison across networks substantially different in size is a promising area for future work in network science.
+
+### Degree-preserving randomization
+
+We use a version of this called random pairwise rewiring, wherein pairs of edges are selected and an end point of each edge are swapped (see: Hanhijarvi et al., 2009, Figure 1(a)). Our implementation also guarantees that the randomized network remains simple by following through with a rewire only so long as it will not introduce self-loops or multi-edges. Randomization continues until 10·m pairs of links have been rewired, where m is the number of simple edges.
+
+### Statistical testing
+
+The KS test is nice, but plots are usually nicest. 
+
+## Local connectivity types
 Networks can be categorized into typologies wherein different network types have systematically different structural properties. Since network measures tend to be correlated and local network features affect global ones, we consider a network typology based in recognizably distinct local connectivity structures. Random networks, social networks, and two-mode networks are the most important and well-known connectivity types (Newman et al., 2001; Rivera et al., 2010; Borgatti and Everett, 1997). These form the basis for our typology. Recently, a new network type with a distinctive local connectivity structure has been identified in work on protein-protein interaction (PPI) networks (Kovács et al., 2019; Kitsak, 2020). This adds so-called functional networks to our typology.
 
 ### Random networks
@@ -21,19 +37,3 @@ Functional networks are those where links form between nodes that complement one
 Spectral methods can be used to summarize the local connectivity structure of a network. The Estrada index is an absolute measure of local connectivity, it quantifies the local density of cycles by having closed paths contribute progressively less to the value of the measure as they take more steps to complete (Estrada, 2000). Its value can be computed as the trace of the matrix exponential of a network's adjacency matrix (alternatively, this is also the sum of the exponential of the eigenvalues of that adjacency matrix).
 
 More relevant to local connectivity structure is a variation of the Estrada index that separates the contribution of even and odd closed paths: spectral bipartivity. This is done using the hyperbolic sine and cosine matrix functions, which add up to the matrix exponential, as applied to a network's adjacency matrix. With proper normalization, spectral bipartivity ranges from 0 when the network is fully complete to 1 when the network is fully bipartite (Estrada and Rodríguez-Velázquez, 2005; Estrada, 2006; Estrada and Gómez-Gardeñes, 2016). We primarily consider the value of the spectral bipartivity under a logistic transformation, because this metric is restricted in range from 0 to 1 and the Estrada index in the denominator can become quite large. Indeed, it grows exponentially with the square root of the number of edges in certain cases (de la Peña et al., 2007). Crucially for large networks, the logit spectral bipartivity can be readily approximated when the spectral bipartivity is very small and the largest and smallest eigenvalues of a network's adjacency matrix are substantially bigger (in magnitude) than their respective neighboring eigenvalues. In this case the logit spectral bipartivity is the sum of the largest and smallest eigenvalues, negated. See the paper for this derivation, if you'd like. 
-
-## Identifying local connectivity structure
-
-Here we propose that spectral bipartivity can be re-purposed to identify local connectivity structure in networks using a comparison to random expectation. Recall that the measure quantifies the over-representation of even paths in the local connectivity structure of a network. Random networks, with neither social nor functional structure, would produce values of spectral bipartivity that fall in-between those of the other two network types. Two-mode networks are bipartite and would have a value of 1. Below is a toy example of how social, random, functional, and two-mode networks with the same number of nodes and edges are arranged according to their value of spectral bipartivity. 
-
-![A toy example of how social, random, functional, and two-mode networks with seven nodes and eleven edges show increasing spectral bipartivity.](scale.jpg?raw=true)
-
-In less contrived scenarios, the comparison to random expectation is key to identifying local connectivity structure because spectral bipartivity is defined as a ratio and the denominator of this ratio is strongly affected by the number of edges in the network. Randomization preserves the number of edges (and the degree sequence, in this case) so it serves as a way to “center” the scale such that remaining differences reflect local connectivity structure. Developing new measures that would allow for comparison across networks substantially different in size is a promising area for future work in network science.
-
-### Degree-preserving randomization
-
-We use a version of this called random pairwise rewiring, wherein pairs of edges are selected and an end point of each edge are swapped (see: Hanhijarvi et al., 2009, Figure 1(a)). Our implementation also guarantees that the randomized network remains simple by following through with a rewire only so long as it will not introduce self-loops or multi-edges. Randomization continues until 10·m pairs of links have been rewired, where m is the number of simple edges.
-
-### Statistical testing
-
-The KS test is nice, but plots are usually nicest. 
