@@ -8,7 +8,7 @@ Spectral bipartivity can be re-purposed to identify local connectivity structure
 
 ![A toy example of how social, random, functional, and two-mode networks with seven nodes and eleven edges show increasing spectral bipartivity.](scale.jpg?raw=true)
 
-Developing new measures that would allow for comparison across networks substantially different in size is a promising area for future work in network science.
+Developing new measures that would allow for comparison across networks substantially different in size is a promising direction for future work in network science.
 
 ### Degree-preserving randomization
 
